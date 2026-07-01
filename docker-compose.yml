@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Elasticsearch latest stable release: 8.17.0
+  es:
+    build: ./elasticsearch
+    container_name: es-dev
+    ports:
+      - "9200:9200" # ES HTTP API port
+    environment:
+      - discovery.type=single-node # Single-node mode for development
+      - xpack.security.enabled=false # Disable security auth for passwordless access
+      - xpack.security.http.ssl.enabled=false # Disable HTTPS
+      - xpack.security.transport.ssl.enabled=false # Disable transport-layer encryption
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m # JVM heap size to limit memory usage
+    volumes:
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/es:/usr/share/elasticsearch/data
+    restart: always
+
+  # Kibana latest stable release: 8.17.0 (must match ES version exactly)
+  kibana:
+    image: kibana:8.17.0
+    container_name: kibana-dev
+    ports:
+      - "5601:5601" # Kibana web UI port
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es:9200 # Internal ES service URL within Docker network
+    volumes:
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/kibana:/usr/share/kibana/data
+    restart: always
+    depends_on:
+      - es # Start Kibana after ES is up
+
+networks:
+  default:
+    name: common-network
