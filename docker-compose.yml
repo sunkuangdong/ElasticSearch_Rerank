@@ -58,8 +58,8 @@ services:
     container_name: minio-dev
     image: minio/minio:RELEASE.2024-05-28T17-19-04Z
     environment:
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
     ports:
       - "9001:9001"
       - "9000:9000"
@@ -67,10 +67,11 @@ services:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/minio:/minio_data
     command: minio server /minio_data --console-address ":9001"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
 
   standalone:
     container_name: standalone-dev
@@ -98,18 +99,6 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-
-  # Rerank: use Cohere API (COHERE_API_KEY in .env). No local container needed on Mac.
-  # Docker TEI on Apple Silicon segfaults under QEMU — keep commented unless on Linux/x86_64.
-  # tei-rerank:
-  #   image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
-  #   container_name: tei-rerank-dev
-  #   ports:
-  #     - "8080:80"
-  #   volumes:
-  #     - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/tei:/data
-  #   command: --model-id newtechstudio/bge-reranker-v2-m3-onnx
-  #   restart: unless-stopped
 
 networks:
   default:
