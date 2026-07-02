@@ -13,6 +13,12 @@ services:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m  # JVM heap size to limit memory usage
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/es/data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
     restart: always
 
   # Kibana 8.17.0 (must match ES version exactly)
@@ -27,7 +33,8 @@ services:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/kibana:/usr/share/kibana/data
     restart: always
     depends_on:
-      - es  # Start Kibana after ES is up
+      es:
+        condition: service_healthy
 
   # Milvus stack: etcd + MinIO + standalone (v2.5.25)
   etcd:
@@ -87,13 +94,13 @@ services:
       - "19530:19530"
       - "9091:9091"
     depends_on:
-      - "etcd"
-      - "minio"
+      etcd:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
 
-  # Rerank (TEI): on Apple Silicon, Docker amd64 TEI segfaults under QEMU — run natively instead:
-  #   brew install text-embeddings-inference
-  #   text-embeddings-router --model-id BAAI/bge-reranker-v2-m3 --port 8080
-  # On Linux/x86_64 you can uncomment the service below.
+  # Rerank: use Cohere API (COHERE_API_KEY in .env). No local container needed on Mac.
+  # Docker TEI on Apple Silicon segfaults under QEMU — keep commented unless on Linux/x86_64.
   # tei-rerank:
   #   image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
   #   container_name: tei-rerank-dev

@@ -5,7 +5,7 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { Milvus } from "@langchain/community/vectorstores/milvus";
 import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import { Annotation, END, START, StateGraph } from "@langchain/langgraph";
-import { TeiRerank } from "../rerank/tei-rerank.mjs";
+import { CohereRerank } from "../rerank/cohere-rerank.mjs";
 import {
   augmentQuery,
   retrievalQueryStrings,
@@ -235,9 +235,9 @@ const milvus = await Milvus.fromExistingCollection(embeddings, {
   textField: "doc_text",
   vectorField: "embedding",
 });
-const reranker = new TeiRerank({
+const reranker = new CohereRerank({
+  apiKey: process.env.COHERE_API_KEY,
   topN: 3,
-  baseUrl: process.env.RERANK_URL,
 });
 
 const chatModel = new ChatOpenAI({
