@@ -90,6 +90,20 @@ services:
       - "etcd"
       - "minio"
 
+  # Rerank (TEI): on Apple Silicon, Docker amd64 TEI segfaults under QEMU — run natively instead:
+  #   brew install text-embeddings-inference
+  #   text-embeddings-router --model-id BAAI/bge-reranker-v2-m3 --port 8080
+  # On Linux/x86_64 you can uncomment the service below.
+  # tei-rerank:
+  #   image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
+  #   container_name: tei-rerank-dev
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/tei:/data
+  #   command: --model-id newtechstudio/bge-reranker-v2-m3-onnx
+  #   restart: unless-stopped
+
 networks:
   default:
     name: common-network
