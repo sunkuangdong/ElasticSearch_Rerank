@@ -36,27 +36,27 @@ async function seedData() {
     const now = new Date().toISOString();
     const docs = [
         {
-          note_title: '杭州西湖半日游',
-          note_body: '早上绕湖慢跑，中午吃片儿川，下午在断桥拍照放松。',
-          tags: ['旅行', '周末', '杭州'],
+          note_title: 'Half-day West Lake Hangzhou',
+          note_body: 'Morning jog around the lake, noodles for lunch, photos at Broken Bridge in the afternoon.',
+          tags: ['travel', 'weekend', 'hangzhou'],
           mood: 'relaxed',
           priority: 2,
           created_at: now,
           updated_at: now
         },
         {
-          note_title: '城市骑行计划',
-          note_body: '周六沿江骑行 20 公里，带上水和简易修车工具。',
-          tags: ['运动', '骑行'],
+          note_title: 'City cycling plan',
+          note_body: 'Saturday 20 km along the river; bring water and a basic repair kit.',
+          tags: ['sports', 'cycling'],
           mood: 'energetic',
           priority: 3,
           created_at: now,
           updated_at: now
         },
         {
-          note_title: '雨天宅家阅读',
-          note_body: '下雨天在家看书，整理本周笔记并做晚餐。',
-          tags: ['生活', '阅读'],
+          note_title: 'Rainy day reading at home',
+          note_body: 'Stay in, read, organize weekly notes, and cook dinner.',
+          tags: ['life', 'reading'],
           mood: 'calm',
           priority: 1,
           created_at: now,

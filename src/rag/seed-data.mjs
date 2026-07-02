@@ -18,92 +18,92 @@ const EMBEDDING = 'embedding';
 const ROWS = [
     {
       id: 'life_01',
-      note_title: '周末煲汤小备忘',
+      note_title: 'Weekend soup cheat sheet',
       note_body:
-        '排骨冷水下锅焯一下，加姜片料酒；换了砂锅小火炖一小时，最后放盐和白胡椒，海带要提前泡发切条。',
-      tags: ['下厨', '周末'],
-      mood: '馋',
+        'Blanch ribs in cold water with ginger and cooking wine; switch to clay pot on low heat for one hour; salt and white pepper at the end; soak kelp strips beforehand.',
+      tags: ['cooking', 'weekend'],
+      mood: 'hungry',
       priority: 2,
     },
     {
       id: 'life_02',
-      note_title: '晚饭后遛狗路线',
+      note_title: 'Evening dog-walking route',
       note_body:
-        '小区东门出去沿河岸走一圈大概四十分钟，记得带拾便袋和水壶；下雨天改地下停车场那层绕两圈也行。',
-      tags: ['宠物', '散步'],
-      mood: '放松',
+        'Exit east gate, loop along the river ~40 minutes; bring waste bags and water; on rainy days use the underground parking level instead.',
+      tags: ['pets', 'walk'],
+      mood: 'relaxed',
       priority: 3,
     },
     {
       id: 'life_03',
-      note_title: '阳台绿植浇水频率',
+      note_title: 'Balcony plant watering',
       note_body:
-        '绿萝见干再浇，龟背竹叶面可以偶尔喷水；夏天蒸发快早上看一眼土表，冬天少浇防止烂根。',
-      tags: ['家务', '植物'],
-      mood: '碎碎念',
+        'Water pothos when soil is dry; mist monstera leaves occasionally; check topsoil every morning in summer; water less in winter to avoid root rot.',
+      tags: ['chores', 'plants'],
+      mood: 'rambling',
       priority: 1,
     },
     {
       id: 'life_04',
-      note_title: '路由器偶尔断流排查笔记',
+      note_title: 'Router dropout troubleshooting',
       note_body:
-        '先重启光猫再重启路由；信道改成自动或固定 36；固件升级到官网最新版；还不行就还原出厂单独测网线。',
-      tags: ['数码', '折腾'],
-      mood: '烦躁',
+        'Reboot modem then router; set channel to auto or fixed 36; upgrade firmware from vendor site; factory reset and test ethernet alone if still failing.',
+      tags: ['tech', 'debugging'],
+      mood: 'annoyed',
       priority: 2,
     },
     {
       id: 'life_05',
-      note_title: '净水器滤芯更换记录',
+      note_title: 'Water purifier filter log',
       note_body:
-        '官网登记的机身序列 SN-MILO-77821；上次换的是第三代 RO 复合滤芯，配件订单号 PO-20250409-K9；下次提醒换前置 PP 棉。',
-      tags: ['家务', '维保'],
-      mood: '琐事',
+        'Registered serial SN-MILO-77821; last replaced gen-3 RO combo filter, parts order PO-20250409-K9; next reminder: pre-filter PP cotton.',
+      tags: ['chores', 'maintenance'],
+      mood: 'mundane',
       priority: 1,
     },
     {
       id: 'life_06',
-      note_title: '梧州龟苓膏粉冲泡比例',
+      note_title: 'Herbal jelly powder ratio',
       note_body:
-        '双钱牌粉一包兑常温凉水先搅匀再小火搅拌到冒小泡；千万别用滚烫开水直接冲容易结块；可加少量桂花蜜。',
-      tags: ['下厨', '甜品'],
-      mood: '解馋',
+        'One packet in room-temp water, stir smooth, then low heat until small bubbles; never pour boiling water directly or it clumps; add a little osmanthus honey.',
+      tags: ['cooking', 'dessert'],
+      mood: 'craving',
       priority: 1,
     },
     {
       id: 'life_07',
-      note_title: '租房合同划的重点句',
+      note_title: 'Lease contract highlights',
       note_body:
-        '第八条写的是押一付三提前三十日书面通知；手写补充了一句「甲方不得以不正当理由扣减退房押金」记得双方都签了字。',
-      tags: ['租房', '法律'],
-      mood: '谨慎',
+        'Clause 8: one month deposit, three months rent, 30-day written notice; handwritten addendum: landlord may not withhold deposit without valid reason — both signed.',
+      tags: ['renting', 'legal'],
+      mood: 'cautious',
       priority: 3,
     },
     {
       id: 'life_08',
-      note_title: '肉汤熬久了反而涩',
+      note_title: 'Stew too long turns astringent',
       note_body:
-        '大块骨肉要先焯掉浮沫，文火咕嘟太久胶质出来了汤会发黏发涩；觉得不清爽可以中途打掉一层油，起锅前再调味。',
-      tags: ['下厨', '技巧'],
-      mood: '琢磨',
+        'Blanch large bones to skim foam; simmer too long and collagen makes broth thick and tannic; skim oil mid-cook if needed; season at the end.',
+      tags: ['cooking', 'tips'],
+      mood: 'thinking',
       priority: 2,
     },
     {
       id: 'life_09',
-      note_title: '半夜趴窗台透气',
+      note_title: 'Midnight window air',
       note_body:
-        '脑子停不下来就一直复盘白天在会上说的话，越想越清醒；干脆开窗吹两分钟冷风，把手机扔到客厅充电再回屋。',
-      tags: ['情绪', '失眠'],
-      mood: '飘',
+        'Brain replays meeting lines and won’t shut off; open window for two minutes of cold air, leave phone charging in the living room, then return.',
+      tags: ['mood', 'insomnia'],
+      mood: 'wired',
       priority: 2,
     },
     {
       id: 'life_10',
-      note_title: '出差酒店网速玄学',
+      note_title: 'Hotel WiFi quirks on trips',
       note_body:
-        '同一个SSID走廊尽头满格会议室里假信号；连手机热点写周报反而稳；视频会议尽量靠窗座位别躲在最里间死角。',
-      tags: ['差旅', '办公'],
-      mood: '无奈',
+        'Same SSID: full bars in the hallway, dead zone in meeting rooms; phone hotspot more stable for weekly reports; video calls near windows, not inner corners.',
+      tags: ['travel', 'work'],
+      mood: 'resigned',
       priority: 2,
     },
 ];
@@ -293,7 +293,7 @@ async function seedMilvus(collectionName, rows, emb) {
   }
   
   /**
-   * 主入口
+   * Entry point
    */
   async function main() {
     try {

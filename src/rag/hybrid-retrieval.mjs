@@ -109,16 +109,16 @@ function formatDocsAsContext(docs) {
 const ANSWER_PROMPT = ChatPromptTemplate.fromMessages([
   [
     "system",
-    `你是阅读用户「生活笔记」知识库并作答的助手。
-        规则：
-        - 只根据下方「检索片段」推断答案；片段里没有的信息不要编造。
-        - 若片段不足以回答，明确说明「笔记里未提到」，并可给出一句保守建议。
-        - 回答简洁有条理，可使用简短列表；口吻自然中文。`,
+    `You answer questions using the user's life-notes knowledge base.
+        Rules:
+        - Answer only from the retrieved snippets below; do not invent facts.
+        - If snippets are insufficient, say "not mentioned in the notes" and offer one cautious suggestion.
+        - Be concise and structured; short lists are fine; natural English tone.`,
   ],
   [
     "human",
-    `用户问题：{query}
-        检索片段：
+    `User question: {query}
+        Retrieved snippets:
         {context}`,
   ],
 ]);
@@ -126,10 +126,10 @@ const ANSWER_PROMPT = ChatPromptTemplate.fromMessages([
 const NO_CONTEXT_PROMPT = ChatPromptTemplate.fromMessages([
   [
     "system",
-    `你是阅读用户「生活笔记」知识库并作答的助手。当前没有检索到任何片段。
-    请用一两句话说明无法从笔记中回答，并礼貌询问用户是否换个说法或补充关键词。`,
+    `You answer questions using the user's life-notes knowledge base. No snippets were retrieved.
+    In one or two sentences, explain you cannot answer from the notes, and politely ask the user to rephrase or add keywords.`,
   ],
-  ["human", "用户问题：{query}"],
+  ["human", "User question: {query}"],
 ]);
 
 export function compileHybridRetrievalGraph(esClient, milvus, reranker, chatModel) {
@@ -252,7 +252,7 @@ const chatModel = new ChatOpenAI({
 /** Sample user queries (string list). */
 const SAMPLE_QUERIES = [
   // "PO-20250409-K9 filter order",
-  "家里无线老是断断续续的咋整啊",
+  "My home WiFi keeps dropping out — what should I try?",
   // "How to mix herbal jelly powder without lumps",
   // "Stew too long and broth turns thick and astringent — what to do before serving",
 ];

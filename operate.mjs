@@ -11,9 +11,9 @@ async function createDocument() {
     const res = await client.index({
         index: INDEX_NAME,
         document: {
-          note_title: '夜跑复盘',
-          note_body: '今天夜跑 5 公里，配速稳定，结束后做了拉伸。',
-          tags: ['运动', '夜跑'],
+          note_title: 'Night run recap',
+          note_body: 'Ran 5 km tonight, steady pace, stretched afterward.',
+          tags: ['sports', 'night-run'],
           mood: 'focused',
           priority: 2,
           created_at: now,
@@ -38,8 +38,8 @@ async function updateDocument(docId) {
       index: INDEX_NAME,
       id: docId,
       doc: {
-        note_body: '今天夜跑 6 公里，状态不错，拉伸后恢复很快。',
-        tags: ['运动', '夜跑', '训练'],
+        note_body: 'Ran 6 km tonight, felt good, recovered quickly after stretching.',
+        tags: ['sports', 'night-run', 'training'],
         updated_at: new Date().toISOString()
       },
       refresh: true
@@ -53,7 +53,7 @@ async function searchDocuments() {
       query: {
         match: {
           note_body: {
-            query: '慢跑以及骑行的数据',
+            query: 'jogging and cycling notes',
             analyzer: 'ik_smart'
           }
         }
@@ -89,7 +89,7 @@ async function run() {
 }
 
 run().catch((err) => {
-    console.error('❌ 操作阶段失败:', err);
+    console.error('❌ Operation failed:', err);
     process.exit(1);
 });
   

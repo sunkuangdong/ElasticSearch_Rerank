@@ -7,25 +7,25 @@ async function main() {
 
     const compressor = new DashScopeRerank({ apiKey, model: "qwen3-rerank", topN: 3 });
 
-    const query = "什么是文本排序模型";
+    const query = "What is a text ranking model?";
     const docs = [
         new Document({
             pageContent:
-                "预训练语言模型的发展给文本排序模型带来了新的进展",
+                "Advances in pretrained language models have improved text ranking models.",
         }),
         new Document({
-            pageContent: "量子计算是计算科学的一个前沿领域",
+            pageContent: "Quantum computing is a frontier area of computer science.",
         }),
         new Document({
-            pageContent: "文本排序模型广泛用于搜索引擎和推荐系统中…",
+            pageContent: "Text ranking models are widely used in search engines and recommender systems…",
         }),
     ];
 
     const ranked = await compressor.compressDocuments(docs, query);
-    console.log("重排后顺序（pageContent）：");
+    console.log("Reranked order (pageContent):");
     for (const d of ranked) {
         console.log("-", d.pageContent);
     }
 }
 
-main()
+main();

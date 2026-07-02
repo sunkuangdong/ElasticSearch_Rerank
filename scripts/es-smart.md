@@ -1,31 +1,38 @@
-# Elasticsearch IK分词版操作手册
-# 索引: life_note
-# 字段全部配置 IK分词: 入库 ik_max_word / 查询 ik_smart
-# 1. 检查 ES 状态
+# Elasticsearch IK Analyzer Playbook
+# Index: life_note
+# Fields use IK: index with ik_max_word / search with ik_smart
+
+# 1. Check ES status
 GET /
-# 2. 查看已安装插件
+
+# 2. List installed plugins
 GET /_cat/plugins?v
-# 3. 原生 standard 分词
+
+# 3. Standard analyzer
 POST /_analyze
 {
   "analyzer": "standard",
-  "text": "Elasticsearch RAG 混合检索知识库"
+  "text": "Elasticsearch RAG hybrid retrieval knowledge base"
 }
-# 4. IK 细粒度分词（索引入库用）
+
+# 4. IK max word (indexing)
 POST /_analyze
 {
   "analyzer": "ik_max_word",
-  "text": "Elasticsearch RAG 混合检索知识库"
+  "text": "Elasticsearch RAG hybrid retrieval knowledge base"
 }
-# 5. IK 智能分词（搜索查询用）
+
+# 5. IK smart (search queries)
 POST /_analyze
 {
   "analyzer": "ik_smart",
-  "text": "Elasticsearch RAG 混合检索知识库"
+  "text": "Elasticsearch RAG hybrid retrieval knowledge base"
 }
-# 1. 查看所有索引
+
+# 1. List all indices
 GET /_cat/indices?v&h=health,status,index,docs.count
-# 2. 创建索引（生活笔记场景 + IK双分词）
+
+# 2. Create index (life notes + dual IK analyzers)
 PUT /life_note
 {
   "mappings": {
@@ -52,61 +59,72 @@ PUT /life_note
     }
   }
 }
-# 3. 查看索引结构
+
+# 3. View mapping
 GET /life_note/_mapping
-# 4. 查看索引配置
+
+# 4. View settings
 GET /life_note/_settings
-# 5. 删除索引
+
+# 5. Delete index
 DELETE /life_note
+
 # =============================
-# 文档 增删改查（生活日常案例）
+# Document CRUD (life notes examples)
 # =============================
-# 1. 新增文档（自动生成 ID）
+
+# 1. Index document (auto ID)
 POST /life_note/_doc
 {
-  "title": "周末城市短途旅行攻略",
-  "content": "周末适合周边短途出行，打卡公园、小吃街，放松日常工作压力，出行尽量避开早晚高峰",
-  "type": "旅行生活",
-  "author": "日常记录",
+  "title": "Weekend city trip guide",
+  "content": "Short trips nearby on weekends — parks, food streets; avoid rush hour when possible",
+  "type": "travel-life",
+  "author": "daily-log",
   "record_time": "2026-04-27"
 }
-# 2. 新增文档（指定自定义 ID）
+
+# 2. Index document (custom ID)
 PUT /life_note/_doc/3001
 {
-  "title": "健康饮食与居家养生",
-  "content": "规律作息、清淡饮食，多吃蔬菜水果，减少熬夜，合理运动才能保持身体健康",
-  "type": "健康生活",
-  "author": "生活达人",
+  "title": "Healthy diet and home wellness",
+  "content": "Regular sleep, light meals, more vegetables, less late nights, moderate exercise",
+  "type": "healthy-life",
+  "author": "life-blogger",
   "record_time": "2026-04-27"
 }
-# 3. 根据 ID 查询单条
+
+# 3. Get by ID
 GET /life_note/_doc/3001
-# 4. 查询全部文档
+
+# 4. Match all
 GET /life_note/_search
 {
   "query": {
     "match_all": {}
   }
 }
-# 5. 全文分词检索（IK中文分词，搜：健康 作息 旅行）
+
+# 5. Full-text search (IK: health sleep travel)
 GET /life_note/_search
 {
   "query": {
     "match": {
-      "content": "健康 作息 旅行"
+      "content": "health sleep travel"
     }
   }
 }
-# 6. 精确匹配查询（keyword 分类字段）
+
+# 6. Term query (keyword field)
 GET /life_note/_search
 {
   "query": {
     "term": {
-      "type": "健康生活"
+      "type": "healthy-life"
     }
   }
 }
-# 7. 只返回指定字段
+
+# 7. Source filtering
 GET /life_note/_search
 {
   "_source": ["title", "type", "author"],
@@ -114,7 +132,8 @@ GET /life_note/_search
     "match_all": {}
   }
 }
-# 8. 分页 + 时间排序
+
+# 8. Pagination + sort by time
 GET /life_note/_search
 {
   "from": 0,
@@ -126,55 +145,64 @@ GET /life_note/_search
     "match_all": {}
   }
 }
-# 9. 局部更新文档（推荐）
+
+# 9. Partial update (recommended)
 POST /life_note/_update/3001
 {
   "doc": {
-    "title": "健康饮食与居家养生小技巧",
-    "type": "居家生活"
+    "title": "Healthy diet tips at home",
+    "type": "home-life"
   }
 }
-# 10. 全量覆盖更新
+
+# 10. Full document replace
 PUT /life_note/_doc/3001
 {
-  "title": "日常养生好习惯总结",
-  "content": "早睡早起合理运动，少吃油腻辛辣食物，保持良好心态，提升生活幸福感",
-  "type": "居家生活",
-  "author": "生活达人",
+  "title": "Daily wellness habits",
+  "content": "Early sleep, exercise, less greasy food, positive mindset",
+  "type": "home-life",
+  "author": "life-blogger",
   "record_time": "2026-04-27"
 }
-# 11. 根据 ID 删除文档
+
+# 11. Delete by ID
 DELETE /life_note/_doc/3001
-# 12. 条件批量删除
+
+# 12. Delete by query
 POST /life_note/_delete_by_query
 {
   "query": {
     "match": {
-      "author": "日常记录"
+      "author": "daily-log"
     }
   }
 }
-# 13. 统计文档总数
+
+# 13. Document count
 GET /life_note/_count
-# 14. 清空索引数据（保留表结构）
+
+# 14. Clear all documents (keep mapping)
 POST /life_note/_delete_by_query
 {
   "query": {
     "match_all": {}
   }
 }
+
 # ======================================
-# IK 分词测试（生活文案）
+# IK analyzer tests
 # ======================================
-# IK 细粒度分词（入库存储使用）
+
+# IK max word (indexing)
 POST /_analyze
 {
   "analyzer": "ik_max_word",
-  "text": "周末短途旅行 居家健康养生 日常美好生活记录"
+  "text": "weekend short trip home wellness daily life notes"
 }
-# IK 智能分词（搜索查询使用）
+
+# IK smart (search)
 POST /_analyze
 {
   "analyzer": "ik_smart",
-  "text": "周末短途旅行 居家健康养生 日常美好生活记录"
+  "text": "weekend short trip home wellness daily life notes"
 }
